@@ -1,8 +1,17 @@
 import styled from "styled-components";
 
+export const PomodoroContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+  justify-content: space-around;
+`;
+
 export const LabelsContainer = styled.div`
   display:flex;
   justify-content: space-around;
+  width: 100%;
 `;
 
 export const LabelContainer = styled.div`
@@ -13,7 +22,12 @@ export const LabelContainer = styled.div`
 `;
 
 export const LabelTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 400;
+  @media(min-width: 768px){
+    font-size: 1.2rem;
+  }
 `;
 
 export const LabelLengthContainer = styled.div`
@@ -28,6 +42,9 @@ export const DisplayLength = styled.p`
   font-size:1.5rem;
   text-align:center;
   margin: 0;
+  color: #28115c;
+  background-color: #e7dcff91;
+  border-radius: 5px;
 `;
 
 export const UpdateLengthIcon = styled.i`
