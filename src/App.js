@@ -1,10 +1,17 @@
 import React from 'react';
+import PomodoroApp from './components/PomodoroApp';
+import { GlobalStyle, AppContainer } from './components/AppStyled';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Pomodoro</h1>
-    </div>
+    <>
+      <GlobalStyle />
+      <AppContainer>
+        <h1>Pomodoro</h1>
+        <PomodoroApp />
+      </AppContainer>
+      <footer>&copy; Malena Ramirez Uribe</footer>
+    </>
   );
 }
 
