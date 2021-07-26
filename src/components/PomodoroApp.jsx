@@ -1,15 +1,17 @@
 import React from 'react';
 import Label from './Label';
 import Timer from './Timer';
+import { LabelsContainer } from './LabelStyled';
 
 const PomodoroApp = () => {
   return (
-    <div>
-      Soy la aplicación
-      <Label id='session' />
-      <Label id='break' />
+    <>
+      <LabelsContainer>
+        <Label id='session' />
+        <Label id='break' />
+      </LabelsContainer>
       <Timer />
-    </div>
+    </>
   );
 };
 
