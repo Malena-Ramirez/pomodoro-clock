@@ -3,14 +3,16 @@ import {
   TimerContainer,
   TimerControlsContainer,
   TimerDisplayContainer,
+  TimerTitle,
+  TimerDisplayText,
 } from './TimerStyled';
 
 const Timer = () => {
   return (
     <TimerContainer>
+      <TimerTitle>Sesión</TimerTitle>
       <TimerDisplayContainer>
-        <h2>Sesión</h2>
-        <p>25:00</p>
+        <TimerDisplayText>25:00</TimerDisplayText>
       </TimerDisplayContainer>
       <TimerControlsContainer>
         <i className='bi bi-play-btn-fill'></i>
