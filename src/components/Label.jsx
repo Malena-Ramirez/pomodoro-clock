@@ -7,17 +7,17 @@ import {
   UpdateLengthIcon,
 } from './LabelStyled';
 
-const Label = ({ type, length, setLength }) => {
+const Label = ({ type, length, setLength, isRunning }) => {
   const name = type === 'session' ? 'de la sesión' : 'del break';
 
   const handleIncrement = () => {
-    if (length < 60) {
+    if (length < 60 && !isRunning) {
       setLength(length + 1);
     }
   };
 
   const handleDecrement = () => {
-    if (length > 1) {
+    if (length > 1 && !isRunning) {
       setLength(length - 1);
     }
   };

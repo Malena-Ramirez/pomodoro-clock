@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   TimerContainer,
   TimerControlsContainer,
@@ -6,102 +6,85 @@ import {
   TimerTitle,
   TimerDisplayText,
 } from './TimerStyled';
+import audioFile from '../assets/alarm.wav';
 
 const Timer = ({
   sessionLength,
   setSessionLength,
   setBreakLength,
   breakLength,
+  isRunning,
+  setisRunning,
 }) => {
   const [mode, setMode] = useState('Sesión');
-  const [timeLeft, setTimeLeft] = useState();
-  const [timeSpent, setTimeSpent] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  // const [displayTime, setDisplayTime] = useState(sessionLength * 60);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const audio = new Audio('../assets/alarm.wav');
+  const [displayTime, setDisplayTime] = useState(sessionLength * 60);
+
+  const alarm = useRef();
 
   useEffect(() => {
-    setTimeLeft(
-      mode === 'Sesión' ? sessionLength * 60 * 1000 : breakLength * 60 * 1000
-    );
-  }, [sessionLength, breakLength]);
+    setDisplayTime(sessionLength * 60);
+  }, [sessionLength]);
 
   useEffect(() => {
-    let interval = null;
-    if (isPlaying && timeLeft > 1) {
-      setTimeLeft(
-        mode === 'Sesión'
-          ? sessionLength * 60 * 1000 - timeSpent
-          : breakLength * 60 * 1000 - timeSpent
-      );
-
-      interval = setInterval(() => {
-        setTimeSpent((timeSpent) => timeSpent + 1000);
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    if (timeLeft === 0) {
-      audio.play();
-      setAudioPlaying(true);
-      setTimeSpent(0);
-      setMode((mode) => (mode === 'Sesión' ? 'Break' : 'Sesión'));
-      setTimeLeft(
-        mode === 'Sesión' ? sessionLength * 60 * 1000 : breakLength * 60 * 1000
-      );
-    }
-  }, [isPlaying, timeSpent]);
-
-  useEffect(() => {
-    audio.addEventListener('ended', () => setAudioPlaying(false));
-    return () => {
-      audio.addEventListener('ended', () => setAudioPlaying(false));
+    const handleSwitch = () => {
+      if (mode === 'Sesión') {
+        setMode('Break');
+        setDisplayTime(breakLength * 60);
+      } else if (mode === 'Break') {
+        setMode('Sesión');
+        setDisplayTime(sessionLength * 60);
+      }
     };
-  }, []);
+    let countdown = null;
+    if (isRunning && displayTime > 0) {
+      countdown = setInterval(() => {
+        setDisplayTime(displayTime - 1);
+      }, 1000);
+    } else if (isRunning && displayTime === 0) {
+      countdown = setInterval(() => {
+        setDisplayTime(displayTime - 1);
+      }, 1000);
+      alarm.current.play();
+      handleSwitch();
+    } else {
+      clearInterval(countdown);
+    }
+    return () => clearInterval(countdown);
+  }, [isRunning, displayTime, mode, breakLength, sessionLength, alarm]);
 
-  // useEffect(() => {
-  //   setDisplayTime(sessionLength * 60);
-  // }, [sessionLength]);
-
-  // const formatTime = (time) => {
-  //   let minutes = Math.floor(time / 1000 / 60);
-  //   let seconds = (time / 1000) % 60;
-  //   return (
-  //     (minutes < 10 ? `0${minutes}` : minutes) +
-  //     ':' +
-  //     (seconds < 10 ? `0${seconds}` : seconds)
-  //   );
-  // };
-
-  const handlePlay = () => {
-    setIsPlaying(!isPlaying);
+  const formatTime = (time) => {
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    return (
+      (minutes < 10 ? `0${minutes}` : minutes) +
+      ':' +
+      (seconds < 10 ? `0${seconds}` : seconds)
+    );
   };
 
-  const startStopIcon = isPlaying
+  const handlePlay = () => {
+    setisRunning(!isRunning);
+  };
+
+  const startStopIcon = isRunning
     ? 'bi bi-pause-btn-fill'
     : 'bi bi-play-btn-fill';
 
   const handleReset = () => {
-    setIsPlaying(false);
+    setisRunning(false);
     setSessionLength(25);
     setBreakLength(5);
-    if (audioPlaying) {
-      audio.pause();
-      audio.currentTime = 0;
-      setAudioPlaying(false);
-    }
+    setMode('Sesión');
+    alarm.current.pause();
+    alarm.current.currentTime = 0;
   };
-
-  const min = Math.floor(timeLeft / 1000 / 60);
-  const sec = Math.floor((timeLeft / 1000) % 60);
 
   return (
     <TimerContainer>
       <TimerTitle id='timer-label'>{mode}</TimerTitle>
       <TimerDisplayContainer>
         <TimerDisplayText id='time-left'>
-          {min}:{sec.toString().length === 1 ? '0' + sec : sec}
+          {formatTime(displayTime)}
         </TimerDisplayText>
       </TimerDisplayContainer>
       <TimerControlsContainer>
@@ -112,6 +95,7 @@ const Timer = ({
           onClick={handleReset}
         ></i>
       </TimerControlsContainer>
+      <audio ref={alarm} src={audioFile} type='audio'></audio>
     </TimerContainer>
   );
 };

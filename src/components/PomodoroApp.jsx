@@ -6,6 +6,7 @@ import { LabelsContainer, PomodoroContainer } from './LabelStyled';
 const PomodoroApp = () => {
   const [sessionLength, setSessionLength] = useState(25);
   const [breakLength, setBreakLength] = useState(5);
+  const [isRunning, setisRunning] = useState(false);
 
   return (
     <PomodoroContainer>
@@ -14,14 +15,22 @@ const PomodoroApp = () => {
           type='session'
           length={sessionLength}
           setLength={setSessionLength}
+          isRunning={isRunning}
         />
-        <Label type='break' length={breakLength} setLength={setBreakLength} />
+        <Label
+          type='break'
+          length={breakLength}
+          setLength={setBreakLength}
+          isRunning={isRunning}
+        />
       </LabelsContainer>
       <Timer
         sessionLength={sessionLength}
         breakLength={breakLength}
         setSessionLength={setSessionLength}
         setBreakLength={setBreakLength}
+        isRunning={isRunning}
+        setisRunning={setisRunning}
       />
     </PomodoroContainer>
   );
