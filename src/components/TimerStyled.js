@@ -29,10 +29,17 @@ export const TimerControlsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  font-size: 1.8rem;
 `;
 
 export const TimerDisplayText = styled.span`
-  font-size: 3rem;
+  font-size: 3rem; 
   font-weight: 700;
+`;
+
+export const TimerControlIcon = styled.i`
+  font-size: 2rem;
+  cursor: pointer;
+  &:hover{
+    color: #4b27df;
+  }
 `;

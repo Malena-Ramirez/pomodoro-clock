@@ -21,7 +21,7 @@ export const AppContainer = styled.div`
   padding: 10px 20px;
   width: 45vw;
   min-width: 260px;
-  height: 65vh;
+  height: 75vh;
   color: #e7dcff;
 `;
 

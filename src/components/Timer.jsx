@@ -5,6 +5,7 @@ import {
   TimerDisplayContainer,
   TimerTitle,
   TimerDisplayText,
+  TimerControlIcon,
 } from './TimerStyled';
 import audioFile from '../assets/alarm.wav';
 
@@ -88,12 +89,16 @@ const Timer = ({
         </TimerDisplayText>
       </TimerDisplayContainer>
       <TimerControlsContainer>
-        <i className={startStopIcon} id='start_stop' onClick={handlePlay}></i>
-        <i
+        <TimerControlIcon
+          className={startStopIcon}
+          id='start_stop'
+          onClick={handlePlay}
+        ></TimerControlIcon>
+        <TimerControlIcon
           className='bi bi-arrow-counterclockwise'
           id='reset'
           onClick={handleReset}
-        ></i>
+        ></TimerControlIcon>
       </TimerControlsContainer>
       <audio ref={alarm} src={audioFile} type='audio'></audio>
     </TimerContainer>
