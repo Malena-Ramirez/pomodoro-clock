@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   LabelContainer,
   LabelLengthContainer,
@@ -7,35 +7,35 @@ import {
   UpdateLengthIcon,
 } from './LabelStyled';
 
-const Label = ({ id }) => {
-  const name = id === 'session' ? 'de la sesión' : 'del break';
-  const minutes = id === 'session' ? 25 : 5;
-  const [length, setLength] = useState(minutes);
+const Label = ({ type, length, setLength }) => {
+  const name = type === 'session' ? 'de la sesión' : 'del break';
 
   const handleIncrement = () => {
-    setLength(length + 1);
+    if (length < 60) {
+      setLength(length + 1);
+    }
   };
 
   const handleDecrement = () => {
-    if (length > 0) {
+    if (length > 1) {
       setLength(length - 1);
     }
   };
 
   return (
     <LabelContainer>
-      <LabelTitle id={`${id}-label`}>Duración {name}</LabelTitle>
+      <LabelTitle id={`${type}-label`}>Duración {name}</LabelTitle>
       <LabelLengthContainer>
-        <DisplayLength id={`${id}-length`}>{length}</DisplayLength>
+        <DisplayLength id={`${type}-length`}>{length}</DisplayLength>
         <UpdateLengthIcon
           onClick={handleIncrement}
           className='bi bi-caret-up-square-fill'
-          id={`${id}-increment`}
+          id={`${type}-increment`}
         ></UpdateLengthIcon>
         <UpdateLengthIcon
           onClick={handleDecrement}
           className='bi bi-caret-down-square-fill'
-          id={`${id}-decrement`}
+          id={`${type}-decrement`}
         ></UpdateLengthIcon>
       </LabelLengthContainer>
     </LabelContainer>
