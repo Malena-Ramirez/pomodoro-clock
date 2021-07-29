@@ -72,10 +72,11 @@ const Timer = ({
     : 'bi bi-play-btn-fill';
 
   const handleReset = () => {
-    setisRunning(false);
     setSessionLength(25);
     setBreakLength(5);
+    setisRunning(false);
     setMode('Sesión');
+    setDisplayTime(sessionLength * 60);
     alarm.current.pause();
     alarm.current.currentTime = 0;
   };
@@ -100,7 +101,7 @@ const Timer = ({
           onClick={handleReset}
         ></TimerControlIcon>
       </TimerControlsContainer>
-      <audio ref={alarm} src={audioFile} type='audio'></audio>
+      <audio ref={alarm} src={audioFile} type='audio' id='beep'></audio>
     </TimerContainer>
   );
 };
